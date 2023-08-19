@@ -6,6 +6,10 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
+    {{-- sweetalert --}}
+    <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+
     <style>
         .webcam-capture,
         .webcam-capture video {
@@ -18,6 +22,17 @@
 
         #map {
             height: 200px;
+        }
+
+        #takeabsen.loading {
+            position: relative;
+        }
+
+        #takeabsen.loading .spinner-grow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
     </style>
 @endpush
@@ -48,9 +63,17 @@
     {{-- kamera webcam --}}
     <div class="row">
         <div class="col">
-            <button id="takeabsen" class="btn btn-info btn-block">
-                <ion-icon name="camera" role="img" class="md hydrated" aria-label="add outline"></ion-icon>
-                Presensi Masuk</button>
+            @if ($cek > 0)
+                <button id="takeabsen" class="btn btn-danger btn-block">
+                    <ion-icon name="camera" role="img" class="md hydrated" aria-label="add outline"></ion-icon>
+                    Presensi Pulang
+                </button>
+            @else
+                <button id="takeabsen" class="btn btn-info btn-block">
+                    <ion-icon name="camera" role="img" class="md hydrated" aria-label="add outline"></ion-icon>
+                    Presensi Masuk
+                </button>
+            @endif
         </div>
     </div>
 
@@ -104,5 +127,83 @@
         function errorCallback() {
 
         }
+
+        // tombol klik presensi masuk
+        $("#takeabsen").click(function(e) {
+            var button = $(this);
+
+            button.prop("disabled", true);
+            button.addClass("loading");
+            button.html(
+                '<ion-icon name="camera" role="img" class="md hydrated" aria-label="add outline"></ion-icon> Sedang Memproses...'
+            );
+
+            // ambil gambar
+            Webcam.snap(function(uri) {
+                image = uri;
+            });
+
+            // ambil lokasi
+            var lokasi = $('#lokasi').val();
+
+            // Tambahkan jeda 2 detik
+            setTimeout(function() {
+                // dengan menggunakan ajax
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('presensi.store') }}",
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        image: image,
+                        lokasi: lokasi,
+                    },
+                    cache: false,
+                    success: function(response) {
+                        // Lakukan sesuatu setelah permintaan berhasil
+                        // Misalnya, hilangkan status loading pada tombol
+                        button.prop("disabled", false);
+                        button.removeClass("loading");
+                        button.html(
+                            '<ion-icon name="camera" role="img" class="md hydrated" aria-label="add outline"></ion-icon> Presensi Masuk'
+                        );
+
+                        var status = response.split("|");
+                        // Cek respons
+                        if (status[0] == "success") {
+                            // Tampilkan SweetAlert jika respons adalah 0
+                            Swal.fire({
+                                title: 'Presensi Berhasil',
+                                html: status[1],
+                                timer: 3000,
+                                timerProgressBar: true,
+                                didOpen: () => {
+                                    Swal.showLoading();
+                                    const b = Swal.getHtmlContainer().querySelector(
+                                        'b');
+                                    timerInterval = setInterval(() => {
+                                        b.textContent = Swal.getTimerLeft();
+                                    }, 100);
+                                },
+                                customClass: {
+                                    htmlContainer: 'text-center' // Menambahkan kelas CSS text-center
+                                },
+                                willClose: () => {
+                                    window.location.href =
+                                        '{{ route('dashboard') }}';
+                                }
+                            })
+                        } else {
+                            // Tampilkan SweetAlert jika respons bukan success
+                            Swal.fire({
+                                title: 'Presensi Gagal',
+                                html: status[1],
+                                icon: 'error', // Tambahkan ikon error
+                                confirmButtonText: 'OK'
+                            });
+                        }
+                    },
+                });
+            }, 1000); // Jeda 1 detik (1000 milidetik)
+        })
     </script>
 @endpush
