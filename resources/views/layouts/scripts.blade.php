@@ -1,4 +1,5 @@
 <script src="{{ asset('assets') }}/js/lib/jquery-3.4.1.min.js"></script>
+
 <!-- Bootstrap-->
 <script src="{{ asset('assets') }}/js/lib/popper.min.js"></script>
 <script src="{{ asset('assets') }}/js/lib/bootstrap.min.js"></script>
@@ -12,8 +13,10 @@
 <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
 <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
 <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js"></script>
 <!-- Base Js File -->
 <script src="{{ asset('assets') }}/js/base.js"></script>
+
 
 <script>
     am4core.ready(function() {
@@ -62,3 +65,4 @@
         ];
     }); // end am4core.ready()
 </script>
+@stack('myscripts')

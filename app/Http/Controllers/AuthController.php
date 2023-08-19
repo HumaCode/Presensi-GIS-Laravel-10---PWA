@@ -12,7 +12,15 @@ class AuthController extends Controller
         if (Auth::guard('karyawan')->attempt(['nik' => $request->nik, 'password' => $request->password])) {
             return redirect('/dashboard');
         } else {
-            echo 'Gagal';
+            return redirect('/')->with(['warning' => 'NIK atau Password Salah..!!']);
+        }
+    }
+
+    public function proseslogout()
+    {
+        if (Auth::guard('karyawan')->check()) {
+            Auth::guard('karyawan')->logout();
+            return redirect('/');
         }
     }
 }

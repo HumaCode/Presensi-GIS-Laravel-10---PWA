@@ -37,6 +37,18 @@
                 <h1>E-Presensi</h1>
                 <h4>Silahkan Login</h4>
             </div>
+
+            @php
+                $warning = Session::get('warning');
+            @endphp
+
+            @if (Session::get('warning'))
+                <div class="alert alert-outline-warning">
+                    {{ $warning }}
+                </div>
+            @endif
+
+
             <div class="section mt-1 mb-5">
                 <form action="{{ route('login') }}" method="POST">
                     @csrf
