@@ -83,6 +83,17 @@
             <div id="map"></div>
         </div>
     </div>
+
+    {{-- audio notifikasi --}}
+    <audio id="notifikasi_in">
+        <source src="{{ asset('assets') }}/sound/notifikasi_in.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="notifikasi_out">
+        <source src="{{ asset('assets') }}/sound/notifikasi_out.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="notifikasi_gagal">
+        <source src="{{ asset('assets') }}/sound/notifikasi_gagal.mp3" type="audio/mpeg">
+    </audio>
 @endsection
 
 
@@ -167,9 +178,20 @@
                             '<ion-icon name="camera" role="img" class="md hydrated" aria-label="add outline"></ion-icon> Presensi Masuk'
                         );
 
+                        var notifikasi_in = document.getElementById('notifikasi_in')
+                        var notifikasi_out = document.getElementById('notifikasi_out')
+                        var notifikasi_gagal = document.getElementById('notifikasi_gagal')
                         var status = response.split("|");
                         // Cek respons
                         if (status[0] == "success") {
+
+                            // bunyikan audio
+                            if (status[2] == 'in') {
+                                notifikasi_in.play();
+                            } else {
+                                notifikasi_out.play();
+                            }
+
                             // Tampilkan SweetAlert jika respons adalah 0
                             Swal.fire({
                                 title: 'Presensi Berhasil',
@@ -193,6 +215,9 @@
                                 }
                             })
                         } else {
+
+                            notifikasi_gagal.play();
+
                             // Tampilkan SweetAlert jika respons bukan success
                             Swal.fire({
                                 title: 'Presensi Gagal',

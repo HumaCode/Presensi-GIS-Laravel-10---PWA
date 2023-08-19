@@ -63,7 +63,7 @@ class PresensiController extends Controller
                 // simpan gambar
                 Storage::put($file, $image_base64);
 
-                echo "success|Terimakasih sudah melakukan presensi pulang...|out";
+                echo "success|Terimakasih, Hati-hati dijalan..|out";
             } else {
 
                 echo "error| Presensi gagal, Silahkan hubungi Admin...!|out";
@@ -83,7 +83,7 @@ class PresensiController extends Controller
                 // simpan gambar
                 Storage::put($file, $image_base64);
 
-                echo "success|Pak mamat beli meja, Selamat bekerja..|in";
+                echo "success|Terimakasih, Selamat bekerja..|in";
             } else {
                 echo "error|Presensi gagal, Silahkan hubungi Admin...!|in";
             }
