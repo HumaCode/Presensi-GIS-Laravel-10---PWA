@@ -94,6 +94,9 @@
     <audio id="notifikasi_gagal">
         <source src="{{ asset('assets') }}/sound/notifikasi_gagal.mp3" type="audio/mpeg">
     </audio>
+    <audio id="notifikasi_luar_radius">
+        <source src="{{ asset('assets') }}/sound/notifikasi_luar_radius.mp3" type="audio/mpeg">
+    </audio>
 @endsection
 
 
@@ -127,11 +130,11 @@
             var marker = L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
 
             // radius lokasi kantor
-            var circle = L.circle([position.coords.latitude, position.coords.longitude], {
+            var circle = L.circle([-6.895905, 109.662748], {
                 color: 'red',
                 fillColor: '#f03',
                 fillOpacity: 0.5,
-                radius: 20
+                radius: 10
             }).addTo(map);
         }
 
@@ -181,6 +184,8 @@
                         var notifikasi_in = document.getElementById('notifikasi_in')
                         var notifikasi_out = document.getElementById('notifikasi_out')
                         var notifikasi_gagal = document.getElementById('notifikasi_gagal')
+                        var notifikasi_luar_radius = document.getElementById(
+                            'notifikasi_luar_radius')
                         var status = response.split("|");
                         // Cek respons
                         if (status[0] == "success") {
@@ -216,14 +221,21 @@
                             })
                         } else {
 
-                            notifikasi_gagal.play();
+                            if (status[2] == 'radius') {
+                                notifikasi_luar_radius.play();
+                            } else {
+                                notifikasi_gagal.play();
+                            }
 
                             // Tampilkan SweetAlert jika respons bukan success
                             Swal.fire({
                                 title: 'Presensi Gagal',
                                 html: status[1],
                                 icon: 'error', // Tambahkan ikon error
-                                confirmButtonText: 'OK'
+                                confirmButtonText: 'OK',
+                                customClass: {
+                                    htmlContainer: 'text-center' // Menambahkan kelas CSS text-center
+                                },
                             });
                         }
                     },

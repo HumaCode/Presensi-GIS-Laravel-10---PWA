@@ -28,8 +28,20 @@ class PresensiController extends Controller
         $nik            = Auth::guard('karyawan')->user()->nik;
         $tgl_presensi   = date("Y-m-d");
         $jam            = date("H:i:s");
-        $lokasi         = $request->lokasi;
         $image          = $request->image;
+        $lokasi         = $request->lokasi;
+
+        $lokasiuser     = explode(",", $lokasi);
+        $latitudeuser   = $lokasiuser[0];
+        $longitudeuser  = $lokasiuser[1];
+
+        // -7.030654, 109.578283 rumah
+        // -6.895905, 109.662748 kantor
+        $latitudekantor     = -6.895905;
+        $longitudekantor    = 109.662748;
+
+        $jarak              = $this->distance($latitudekantor, $longitudekantor, $latitudeuser, $longitudeuser);
+        $radius             = round($jarak['meters']);
 
         $folderPath     = "public/uploads/presensi/";
         $formatName     = $nik . "-" . $tgl_presensi;
@@ -46,47 +58,67 @@ class PresensiController extends Controller
             ->where('nik', $nik)
             ->count();
 
-        // jika sudah melakukan presensi masuk maka update datanya
-        if ($cek > 0) {
-            $data2 = [
-                'jam_out'        => $jam,
-                'foto_out'       => $fileName,
-                'lokasi_out'     => $lokasi,
-            ];
-
-            $update = DB::table('presensi')
-                ->where('tgl_presensi', $tgl_presensi)
-                ->where('nik', $nik)
-                ->update($data2);
-
-            if ($update) {
-                // simpan gambar
-                Storage::put($file, $image_base64);
-
-                echo "success|Terimakasih, Hati-hati dijalan..|out";
-            } else {
-
-                echo "error| Presensi gagal, Silahkan hubungi Admin...!|out";
-            }
+        // cek diluar radius kantor atau tidak
+        if ($radius > 10) {
+            echo "error|Kamu berada diluar radius, jarak anda " . $radius . " meter dari kantor.|radius";
         } else {
-            $data = [
-                'nik'           => $nik,
-                'tgl_presensi'  => $tgl_presensi,
-                'jam_in'        => $jam,
-                'foto_in'       => $fileName,
-                'lokasi_in'     => $lokasi,
-            ];
+            // jika sudah melakukan presensi masuk maka update datanya
+            if ($cek > 0) {
+                $data2 = [
+                    'jam_out'        => $jam,
+                    'foto_out'       => $fileName,
+                    'lokasi_out'     => $lokasi,
+                ];
 
-            $simpan = DB::table('presensi')->insert($data);
+                $update = DB::table('presensi')
+                    ->where('tgl_presensi', $tgl_presensi)
+                    ->where('nik', $nik)
+                    ->update($data2);
 
-            if ($simpan) {
-                // simpan gambar
-                Storage::put($file, $image_base64);
+                if ($update) {
+                    // simpan gambar
+                    Storage::put($file, $image_base64);
 
-                echo "success|Terimakasih, Selamat bekerja..|in";
+                    echo "success|Terimakasih, Hati-hati dijalan..|out";
+                } else {
+
+                    echo "error| Presensi gagal, Silahkan hubungi Admin...!|out";
+                }
             } else {
-                echo "error|Presensi gagal, Silahkan hubungi Admin...!|in";
+                $data = [
+                    'nik'           => $nik,
+                    'tgl_presensi'  => $tgl_presensi,
+                    'jam_in'        => $jam,
+                    'foto_in'       => $fileName,
+                    'lokasi_in'     => $lokasi,
+                ];
+
+                $simpan = DB::table('presensi')->insert($data);
+
+                if ($simpan) {
+                    // simpan gambar
+                    Storage::put($file, $image_base64);
+
+                    echo "success|Terimakasih, Selamat bekerja..|in";
+                } else {
+                    echo "error|Presensi gagal, Silahkan hubungi Admin...!|in";
+                }
             }
         }
+    }
+
+    // menghitung jarak
+    function distance($lat1, $lon1, $lat2, $lon2)
+    {
+        $theta = $lon1 - $lon2;
+        $miles = (sin(deg2rad($lat1)) * sin(deg2rad($lat2))) + (cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($theta)));
+        $miles = acos($miles);
+        $miles = rad2deg($miles);
+        $miles = $miles * 60 * 1.1515;
+        $feet = $miles * 5280;
+        $yards = $feet / 3;
+        $kilometers = $miles * 1.609344;
+        $meters = $kilometers * 1000;
+        return compact('meters');
     }
 }
