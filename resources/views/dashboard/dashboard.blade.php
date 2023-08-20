@@ -111,6 +111,56 @@
             </div>
         </div>
 
+        <div id="rekappresensi">
+            <h5><strong>Rekap Presensi Bulan {{ $namabulan[$bulanini] }} Tahun {{ $tahunini }}</strong></h5>
+            <div class="row">
+                <div class="col-3">
+                    <div class="card">
+                        <div class="card-body text-center" style="padding: 12px 12px !important;">
+                            <span class="badge badge-danger"
+                                style="position: absolute; top:3px; right:10px; font-size:0.6rem; z-index:999;">10</span>
+                            <ion-icon name="accessibility-outline" style="font-size: 1.6rem;"
+                                class="text-primary"></ion-icon>
+                            <br>
+                            <small style="font-weight: bold">Hadir</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="card">
+                        <div class="card-body text-center" style="padding: 12px 12px !important;">
+                            <span class="badge badge-danger"
+                                style="position: absolute; top:3px; right:10px; font-size:0.6rem; z-index:999;">10</span>
+                            <ion-icon name="newspaper-outline" style="font-size: 1.6rem;" class="text-success"></ion-icon>
+                            <br>
+                            <small style="font-weight: bold">Izin</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="card">
+                        <div class="card-body text-center" style="padding: 12px 12px !important;">
+                            <span class="badge badge-danger"
+                                style="position: absolute; top:3px; right:10px; font-size:0.6rem; z-index:999;">10</span>
+                            <ion-icon name="medkit-outline" style="font-size: 1.6rem;" class="text-warning"></ion-icon>
+                            <br>
+                            <small style="font-weight: bold">Sakit</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="card">
+                        <div class="card-body text-center" style="padding: 12px 12px !important;">
+                            <span class="badge badge-danger"
+                                style="position: absolute; top:3px; right:10px; font-size:0.6rem; z-index:999;">10</span>
+                            <ion-icon name="alarm-outline" style="font-size: 1.6rem;" class="text-danger"></ion-icon>
+                            <br>
+                            <small style="font-weight: bold">Telat</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="presencetab mt-2">
             <div class="tab-pane fade show active" id="pilled" role="tabpanel">
@@ -135,14 +185,14 @@
                             @foreach ($historibulanini as $presensi)
                                 <div class="item">
                                     <div class="icon-box bg-primary">
-                                        <ion-icon name="person-sharp" role="img" class="md hydrated"
-                                            aria-label="person-sharp"></ion-icon>
+                                        <ion-icon name="finger-print-outline" role="img" class="md hydrated"
+                                            aria-label="finger-print-outline"></ion-icon>
                                     </div>
                                     <div class="in">
                                         <div>{{ date('d-m-Y', strtotime($presensi->tgl_presensi)) }}</div>
                                         <span class="badge badge-success">{{ $presensi->jam_in }}</span>
                                         <span
-                                            class="badge badge-danger">{{ $presensihariini != null && $presensihariini->jam_out != null ? $presensi->jam_out : '-' }}</span>
+                                            class="badge badge-danger">{{ $presensihariini != null && $presensi->jam_out != null ? $presensi->jam_out : '-' }}</span>
                                     </div>
                                 </div>
                             @endforeach
