@@ -37,26 +37,30 @@ class PresensiController extends Controller
 
         // -7.030654, 109.578283 rumah
         // -6.895905, 109.662748 kantor
-        $latitudekantor     = -6.895905;
-        $longitudekantor    = 109.662748;
+        $latitudekantor     = -7.030654;
+        $longitudekantor    = 109.578283;
 
         $jarak              = $this->distance($latitudekantor, $longitudekantor, $latitudeuser, $longitudeuser);
         $radius             = round($jarak['meters']);
-
-        $folderPath     = "public/uploads/presensi/";
-        $formatName     = $nik . "-" . $tgl_presensi;
-        $image_parts    = explode(";base64", $image);
-        $image_base64   = base64_decode($image_parts[1]);
-        $fileName       = $formatName . "-" . date("Hi") .  ".png";
-        $file           = $folderPath . $fileName;
-
-
 
         // cek apakah sudah melakukan presensi sebelumnya
         $cek = DB::table('presensi')
             ->where('tgl_presensi', $tgl_presensi)
             ->where('nik', $nik)
             ->count();
+
+        if ($cek > 0) {
+            $ket = 'out';
+        } else {
+            $ket = 'in';
+        }
+
+        $folderPath     = "public/uploads/presensi/";
+        $formatName     = $nik . "-" . $tgl_presensi;
+        $image_parts    = explode(";base64", $image);
+        $image_base64   = base64_decode($image_parts[1]);
+        $fileName       = $formatName . "-" . date("Hi") . "-" . $ket .  ".png";
+        $file           = $folderPath . $fileName;
 
         // cek diluar radius kantor atau tidak
         if ($radius > 10) {

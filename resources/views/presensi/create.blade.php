@@ -130,7 +130,7 @@
             var marker = L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
 
             // radius lokasi kantor
-            var circle = L.circle([-6.895905, 109.662748], {
+            var circle = L.circle([-7.030654, 109.578283], {
                 color: 'red',
                 fillColor: '#f03',
                 fillOpacity: 0.5,
