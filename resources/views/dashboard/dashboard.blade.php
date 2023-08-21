@@ -192,7 +192,7 @@
                                         <div>{{ date('d-m-Y', strtotime($presensi->tgl_presensi)) }}</div>
                                         <span class="badge badge-success">{{ $presensi->jam_in }}</span>
                                         <span
-                                            class="badge badge-danger">{{ $presensihariini != null && $presensi->jam_out != null ? $presensi->jam_out : '-' }}</span>
+                                            class="badge badge-danger">{{ $presensi != null && $presensi->jam_out != null ? $presensi->jam_out : '-' }}</span>
                                     </div>
                                 </div>
                             @endforeach
