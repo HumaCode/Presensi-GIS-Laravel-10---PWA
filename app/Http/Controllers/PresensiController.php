@@ -36,9 +36,10 @@ class PresensiController extends Controller
         $longitudeuser  = $lokasiuser[1];
 
         // -7.030654, 109.578283 rumah
+        // -7.030722, 109.577493 rumah
         // -6.895905, 109.662748 kantor
-        $latitudekantor     = -7.030654;
-        $longitudekantor    = 109.578283;
+        $latitudekantor     = -7.030722;
+        $longitudekantor    = 109.577493;
 
         $jarak              = $this->distance($latitudekantor, $longitudekantor, $latitudeuser, $longitudeuser);
         $radius             = round($jarak['meters']);
