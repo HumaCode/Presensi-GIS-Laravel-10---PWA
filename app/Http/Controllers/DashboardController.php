@@ -16,18 +16,19 @@ class DashboardController extends Controller
         $nik                = Auth::guard('karyawan')->user()->nik;
 
         $namabulan = [
-            '',
-            'Januari',
-            'Februari',
-            'Maret',
-            'April',
-            'Mei',
-            'Juni',
-            'Juli',
-            'Agustus',
-            'September',
-            'November',
-            'Desember',
+            "",
+            "Januari",
+            "Februari",
+            "Maret",
+            "April",
+            "Mei",
+            "Juni",
+            "Juli",
+            "Agustus",
+            "September",
+            "Oktober",
+            "November",
+            "Desember",
         ];
 
         $presensihariini    = DB::table('presensi')
