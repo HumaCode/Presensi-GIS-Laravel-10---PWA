@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class PresensiController extends Controller
@@ -125,5 +126,58 @@ class PresensiController extends Controller
         $kilometers = $miles * 1.609344;
         $meters = $kilometers * 1000;
         return compact('meters');
+    }
+
+    public function editprofil()
+    {
+        $nik        = Auth::guard('karyawan')->user()->nik;
+        $karyawan   = DB::table('karyawan')->where('nik', $nik)->first();
+
+        return view('presensi.editprofil', compact('karyawan'));
+    }
+
+    public function updateprofil(Request $request, $id)
+    {
+        $karyawan       = DB::table('karyawan')->where('id', $id)->first();
+        $nama_lengkap   = $request->nama_lengkap;
+        $no_hp          = $request->no_hp;
+
+        if ($request->hasFile('foto')) {
+            $foto = $karyawan->nik . "-" . $request->file('foto')->getClientOriginalName();
+        }
+
+        if ($request->password != null) {
+            $pass       = Hash::make($request->password);
+        } else {
+            $pass       = $karyawan->password;
+        }
+
+        if ($request->hasFile('foto')) {
+
+            $folderPath = "public/uploads/karyawan/";
+
+            if ($karyawan->foto != null) {
+                // unlink("public/uploads/karyawan/" . $foto);
+                Storage::delete('public/uploads/karyawan/' . $karyawan->foto);
+            }
+
+            $request->file('foto')->storeAs($folderPath, $foto);
+        }
+
+        $data = [
+            'nama_lengkap'  => $nama_lengkap,
+            'no_hp'         => $no_hp,
+            'foto'          => $foto,
+            'password'      => $pass,
+        ];
+
+        $update = DB::table('karyawan')->where('id', $id)->update($data);
+
+        if ($update) {
+
+            return redirect()->back()->with('success', 'Data berhasil diubah');
+        } else {
+            return redirect()->back()->with('error', 'Data gagal diubah');
+        }
     }
 }

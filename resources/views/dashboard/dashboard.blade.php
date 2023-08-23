@@ -4,7 +4,8 @@
     <div class="section" id="user-section">
         <div id="user-detail">
             <div class="avatar">
-                <img src="{{ asset('assets') }}/img/sample/avatar/avatar1.jpg" alt="avatar" class="imaged w64 rounded">
+                <img src="{{ Auth::guard('karyawan')->user()->foto == null ? asset('assets/img/sample/avatar/avatar1.jpg') : Storage::url('uploads/karyawan/' . Auth::guard('karyawan')->user()->foto) }}"
+                    alt="avatar" class="imaged w64 rounded">
             </div>
             <div id="user-info">
                 <h2 id="user-name">{{ Auth::guard('karyawan')->user()->nama_lengkap }}</h2>
