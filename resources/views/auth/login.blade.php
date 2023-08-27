@@ -50,7 +50,7 @@
 
 
             <div class="section mt-1 mb-5">
-                <form action="{{ route('login') }}" method="POST">
+                <form action="{{ route('proseslogin') }}" method="POST">
                     @csrf
 
                     <div class="form-group boxed">

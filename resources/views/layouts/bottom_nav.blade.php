@@ -19,10 +19,10 @@
             </div>
         </div>
     </a>
-    <a href="#" class="item">
+    <a href="{{ route('izin.presensi') }}" class="item {{ \Route::is('izin.presensi') ? 'active' : '' }}">
         <div class="col">
-            <ion-icon name="newspaper-outline" role="img" class="md hydrated"
-                aria-label="newspaper-outline"></ion-icon>
+            <ion-icon name="calendar-outline" role="img" class="md hydrated"
+                aria-label="calendar-outline"></ion-icon>
             <strong>Izin</strong>
         </div>
     </a>

@@ -21,8 +21,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['guest:karyawan'])->group(function () {
     Route::get('/', function () {
         return view('auth.login');
-    });
-    Route::post('/proseslogin', [AuthController::class, 'proseslogin'])->name('login');
+    })->name('login');
+    Route::post('/proseslogin', [AuthController::class, 'proseslogin'])->name('proseslogin');
 });
 
 
@@ -41,4 +41,9 @@ Route::middleware(['auth:karyawan'])->group(function () {
     // histori presensi
     Route::get('/histori/presensi', [PresensiController::class, 'histori'])->name('histori.presensi');
     Route::post('/histori/getHistori', [PresensiController::class, 'getHistori'])->name('histori.getHistori');
+
+    // izin
+    Route::get('/presensi/izin', [PresensiController::class, 'izin'])->name('izin.presensi');
+    Route::get('/presensi/buatizin', [PresensiController::class, 'buatizin'])->name('buatizin.presensi');
+    Route::post('/presensi/storeizin', [PresensiController::class, 'storeizin'])->name('storeizin.presensi');
 });

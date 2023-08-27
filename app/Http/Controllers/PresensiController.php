@@ -39,8 +39,8 @@ class PresensiController extends Controller
         // -7.030654, 109.578283 rumah
         // -7.030722, 109.577493 rumah
         // -6.895905, 109.662748 kantor
-        $latitudekantor     = -7.030722;
-        $longitudekantor    = 109.577493;
+        $latitudekantor     = -7.030654;
+        $longitudekantor    = 109.578283;
 
         $jarak              = $this->distance($latitudekantor, $longitudekantor, $latitudeuser, $longitudeuser);
         $radius             = round($jarak['meters']);
@@ -223,5 +223,38 @@ class PresensiController extends Controller
             ->get();
 
         return view('presensi.getHistori', compact('histori'));
+    }
+
+    public function izin()
+    {
+        return view('presensi.izin');
+    }
+
+    public function buatizin()
+    {
+        return view('presensi.buatizin');
+    }
+
+    public function storeizin(Request $request)
+    {
+        $nik        = Auth::guard('karyawan')->user()->nik;
+        $tgl_izin   = $request->tgl_izin;
+        $status     = $request->status;
+        $keterangan = $request->keterangan;
+
+        $data = [
+            'nik'           => $nik,
+            'tgl_izin'      => $tgl_izin,
+            'status'        => $status,
+            'keterangan'    => $keterangan,
+        ];
+
+        $simpan = DB::table('pengajuan_izin')->insert($data);
+
+        if ($simpan) {
+            return redirect()->route('izin.presensi')->with(['success' => 'Data berhasil dikirim']);
+        } else {
+            return redirect()->route('izin.presensi')->with(['error' => 'Data gagal dikirim']);
+        }
     }
 }
