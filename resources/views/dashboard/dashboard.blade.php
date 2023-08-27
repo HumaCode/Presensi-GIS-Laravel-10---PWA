@@ -133,8 +133,12 @@
                 <div class="col-3">
                     <div class="card">
                         <div class="card-body text-center" style="padding: 12px 12px !important;">
-                            <span class="badge badge-danger"
-                                style="position: absolute; top:3px; right:10px; font-size:0.6rem; z-index:999;">10</span>
+
+                            @if ($reqkapizin->jmlizin > 0)
+                                <span class="badge badge-danger"
+                                    style="position: absolute; top:3px; right:10px; font-size:0.6rem; z-index:999;">{{ $reqkapizin->jmlizin }}</span>
+                            @endif
+
                             <ion-icon name="newspaper-outline" style="font-size: 1.6rem;" class="text-success"></ion-icon>
                             <br>
                             <small style="font-weight: bold">Izin</small>
@@ -144,8 +148,12 @@
                 <div class="col-3">
                     <div class="card">
                         <div class="card-body text-center" style="padding: 12px 12px !important;">
-                            <span class="badge badge-danger"
-                                style="position: absolute; top:3px; right:10px; font-size:0.6rem; z-index:999;">10</span>
+
+                            @if ($reqkapizin->jmlsakit > 0)
+                                <span class="badge badge-danger"
+                                    style="position: absolute; top:3px; right:10px; font-size:0.6rem; z-index:999;">{{ $reqkapizin->jmlsakit }}</span>
+                            @endif
+
                             <ion-icon name="medkit-outline" style="font-size: 1.6rem;" class="text-warning"></ion-icon>
                             <br>
                             <small style="font-weight: bold">Sakit</small>

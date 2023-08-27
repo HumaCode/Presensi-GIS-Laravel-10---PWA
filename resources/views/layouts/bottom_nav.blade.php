@@ -19,7 +19,8 @@
             </div>
         </div>
     </a>
-    <a href="{{ route('izin.presensi') }}" class="item {{ \Route::is('izin.presensi') ? 'active' : '' }}">
+    <a href="{{ route('izin.presensi') }}"
+        class="item {{ \Route::is('izin.presensi') || \Route::is('buatizin.presensi') ? 'active' : '' }}">
         <div class="col">
             <ion-icon name="calendar-outline" role="img" class="md hydrated"
                 aria-label="calendar-outline"></ion-icon>
