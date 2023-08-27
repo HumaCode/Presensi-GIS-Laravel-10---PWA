@@ -2,6 +2,16 @@
 
 @push('css')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+
+    <style>
+        .datepicker-modal {
+            max-height: 430px !important;
+        }
+
+        .datepicker-date-display {
+            background-color: cornflowerblue;
+        }
+    </style>
 @endpush
 
 @section('header')
@@ -37,7 +47,7 @@
                 </div>
 
                 <div class="form-group">
-                    <textarea name="keterangan" id="ket" class="form-control" rows="5" placeholder="Keterangan"></textarea>
+                    <textarea name="keterangan" id="keterangan" class="form-control" rows="5" placeholder="Keterangan"></textarea>
                 </div>
 
                 <div class="form-group">
