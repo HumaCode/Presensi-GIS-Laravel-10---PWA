@@ -9,7 +9,7 @@
                     <div class="col">
 
                         <h2 class="page-title">
-                            Dashboard
+                            DASHBOARD
                         </h2>
                     </div>
                     <!-- Page title actions -->
@@ -187,4 +187,5 @@
                 </div>
             </div>
         </div>
-    @endsection
+    </div>
+@endsection
