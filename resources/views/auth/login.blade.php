@@ -43,7 +43,7 @@
             @endphp
 
             @if (Session::get('warning'))
-                <div class="alert alert-outline-warning">
+                <div class="alert alert-warning">
                     {{ $warning }}
                 </div>
             @endif
