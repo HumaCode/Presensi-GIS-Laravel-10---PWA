@@ -65,4 +65,5 @@ Route::middleware(['auth:user'])->group(function () {
 
     // data karyawan
     Route::get('/karyawan', [KaryawanController::class, 'index'])->name('karyawan');
+    Route::post('/karyawan/store', [KaryawanController::class, 'store'])->name('karyawan.store');
 });
